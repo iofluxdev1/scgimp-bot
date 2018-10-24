@@ -23,7 +23,7 @@ namespace StarCitizen.Gimp.Core.UnitTest
         {
             return new ScGimpSubscriber[]
             {
-                new ScGimpSubscriber() { Email = "aspruyt@hotmail.co.uk", Id = 1L }
+                new ScGimpSubscriber() { Email = "youremail@hotmail.com", Id = 1L }
             };
         }
 

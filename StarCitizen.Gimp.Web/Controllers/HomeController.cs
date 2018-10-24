@@ -549,21 +549,6 @@ namespace StarCitizen.Gimp.Web.Controllers
 
             try
             {
-                if (model.Email.ToLowerInvariant().Contains("web.de") ||
-                    model.Email.ToLowerInvariant().Contains("gmx.de") ||
-                    model.Email.ToLowerInvariant().Contains("streber24.de"))
-                {
-                    model.Message = "<div class=\"alert alert-danger\">Your email provider (web.de, gmx.de and streber24.de) has blacklisted this IP address for no reason and I can't be arsed to contact them and convince them this is not spam. As such you will have to register with another address if you want to subscribe to this service or contact them yourself and get it delisted and in turn contact @fluxxie via spectrum.</div>";
-
-                    return model;
-                }
-                else if (model.Email.ToLowerInvariant().Contains("francesco_uni@hotmail.it"))
-                {
-                    model.Message = "<div class=\"alert alert-danger\">You have been banned from using this service due to being too lazy to unsubscribe and reporting notifications as spam for which you signed up yourself.</div>";
-
-                    return model;
-                }
-
                 model.Message = string.Empty;
 
                 bool recaptchaResult = await VerifyGoogleRecaptcha(model.RecaptchaResponse);

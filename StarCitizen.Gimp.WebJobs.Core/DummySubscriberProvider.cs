@@ -60,7 +60,7 @@ namespace StarCitizen.Gimp.WebJobs.Core
             {
                 new ScGimpSubscriber()
                 {
-                    Email = "aspruyt@hotmail.co.uk",
+                    Email = "youremail@hotmail.com",
                     Id = 1L
                 }
             };
