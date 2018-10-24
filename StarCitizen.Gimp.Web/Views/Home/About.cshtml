@@ -1,0 +1,59 @@
+﻿@using System.Collections.Generic
+@using System.Linq
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Http.Authentication
+@{
+    ViewData["Title"] = "What is scgimp?";
+    ViewData["MetaDescription"] = "About Star Citizen Gimp: The bot that notifies you when there are updates to the RSI store, announcements on Spectrum or comm link feed so you never miss out on new content and promotions.";
+    ViewData["MetaKeywords"] = "About Star Citizen Gimp,ScGimp,SC Gimp,Star Citizen,notifications,bot,sales monitor,detect changes,crawl,early warning,Star Citizen shop notifications,sale automatic email,automatic notifications,automatic notification";
+}
+<h1>About</h1>
+<h2>What is Star Citizen Gimp?</h2>
+<p>Star Citizen Gimp is a bot that notifies a subscriber whenever it detects new products on the RSI store, announcements on Spectrum or new articles in the comm link feed.</p>
+<h2>Why would you use it?</h2>
+<ul>
+    <li>if you don't want to miss out on limited hull ship sales ever again,</li>
+    <li>if you want to be a contender to post FIRST on comm-link articles,</li>
+    <li>if you want to get notifications for patch notes and publishes to live from the Spectrum announcements</li>
+    <li>or if you simply have a problem like many other citizens in that you can't help but throw your wallet at the RSI store each time something new comes along then this bot is for you!</li>
+</ul>
+<h2>Example notification</h2>
+<p>Automated notifications are sent by email and Discord Webhooks immediately after any changes are detected and the following is an example of the content of a Star Citizen Gimp notification:</p>
+<div class="jumbotron">
+    <div>
+        <p>Greetings Citizen,</p>
+        <p>The following content update(s) were detected on RSI:</p>
+        <div>
+            1. <a href="https://www.robertsspaceindustries.com/pledge/Upgrades/Freelancer-MAX-To-Razor-Upgrade" alt="Freelancer MAX to Razor Upgrade - Ship Upgrades">
+                Freelancer MAX to Razor Upgrade - Ship Upgrades
+            </a> USD 5
+        </div>
+        <div>
+            2. <a href="https://www.robertsspaceindustries.com/pledge/Upgrades/F7C-R-Hornet-Tracker-To-Razor-Upgrade" alt="F7C-R Hornet Tracker to Razor Upgrade - Ship Upgrades">
+                F7C-R Hornet Tracker to Razor Upgrade - Ship Upgrades
+            </a> USD 5
+        </div>
+        <div>
+            3. <a href="https://www.robertsspaceindustries.com/pledge/Upgrades/350r-To-MISC-Razor-Upgrade" alt="350r to MISC Razor Upgrade - Ship Upgrades">
+                350r to MISC Razor Upgrade - Ship Upgrades
+            </a> USD 20
+        </div>
+        <div>
+            4. <a href="https://www.robertsspaceindustries.com/pledge/Upgrades/Freelancer-DUR-To-MISC-Razor-Upgrade" alt="Freelancer DUR to MISC Razor Upgrade - Ship Upgrades">
+                Freelancer DUR to MISC Razor Upgrade - Ship Upgrades
+            </a> USD 20
+        </div>
+        <div>
+            5. <a href="https://www.robertsspaceindustries.com/pledge/Upgrades/F7C-S-Hornet-Ghost-To-MISC-Razor-Upgrade" alt="F7C-S Hornet Ghost to MISC Razor Upgrade - Ship Upgrades">
+                F7C-S Hornet Ghost to MISC Razor Upgrade - Ship Upgrades
+            </a> USD 20
+        </div>
+        ...
+    </div>
+</div>
+<h2>Notification Channels</h2>
+<p>The Star Citizen Gimp bot supports <a asp-area="" asp-controller="Home" asp-action="Subscribe">email</a> and <a asp-area="" asp-controller="Home" asp-action="DiscordWebhooks">Discord Webhooks</a> as notification channels. Pick your poison and subscribe by <a asp-area="" asp-controller="Home" asp-action="Subscribe">email address</a> or <a asp-area="" asp-controller="Home" asp-action="DiscordWebhooks">Discord Webhook</a>.</p>
+<h2>The Developer</h2>
+<p>The Star Citizen Gimp bot was created by @@<a href="https://robertsspaceindustries.com/citizens/fluxxie">fluxxie</a>.</p>
+<h2>Suggestions &amp; Feedback</h2>
+<p>If you have any feedback or suggestions create a post <a href="https://robertsspaceindustries.com/community/deep-space-radar/1679-Star-Citizen-Gimp">here</a> or send @@fluxxie a message via <a href="https://robertsspaceindustries.com/spectrum">Spectrum</a>.</p>

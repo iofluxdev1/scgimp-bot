@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 
 namespace StarCitizen.Gimp.Web
 {
@@ -14,32 +8,40 @@ namespace StarCitizen.Gimp.Web
     {
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
+            IWebHostBuilder webHostBuilder = CreateWebHostBuilder(args)
+                .UseStartup<Startup>();
+
+            using (IWebHost webHost = webHostBuilder.Build())
+            {
+                webHost.Run();
+            }
         }
 
-        public static IWebHost BuildWebHost(string[] args) =>
-#if DEBUG
-            WebHost.CreateDefaultBuilder(args)
-            .UseKestrel()
-            //.UseContentRoot(Directory.GetCurrentDirectory())
-            .CaptureStartupErrors(true)
-            .UseSetting("detailedErrors", "true")
-                .UseIISIntegration()
-            //.UseAzureAppServices()
-                .UseApplicationInsights()
-                .UseStartup<Startup>()
-                .Build();
-#else
-        WebHost.CreateDefaultBuilder(args)
-            //.UseKestrel()
-            //.UseContentRoot(Directory.GetCurrentDirectory())
-            //.CaptureStartupErrors(true)
-            //.UseSetting("detailedErrors", "true")
-                //.UseIISIntegration()
-                .UseAzureAppServices()
-                .UseApplicationInsights()
-                .UseStartup<Startup>()
-                .Build();
-#endif
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args)
+        {
+            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+            {
+                // https://github.com/aspnet/MetaPackages/blob/rel/2.0.0-preview1/src/Microsoft.AspNetCore/WebHost.cs
+                return WebHost.CreateDefaultBuilder(args)
+                    .CaptureStartupErrors(true)
+                    .UseSetting("detailedErrors", "true")
+                    .UseApplicationInsights();
+            }
+            else if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production")
+            {
+                // https://github.com/aspnet/MetaPackages/blob/rel/2.0.0-preview1/src/Microsoft.AspNetCore/WebHost.cs
+                return WebHost.CreateDefaultBuilder(args)
+                    .UseAzureAppServices()
+                    .UseApplicationInsights();
+            }
+            else
+            {
+                // https://github.com/aspnet/MetaPackages/blob/rel/2.0.0-preview1/src/Microsoft.AspNetCore/WebHost.cs
+                return WebHost.CreateDefaultBuilder(args)
+                    .CaptureStartupErrors(true)
+                    .UseSetting("detailedErrors", "true")
+                    .UseApplicationInsights();
+            }
+        }
     }
 }

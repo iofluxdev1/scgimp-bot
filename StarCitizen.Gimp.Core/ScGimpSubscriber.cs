@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace StarCitizen.Gimp.Core
+﻿namespace StarCitizen.Gimp.Core
 {
     /// <summary>
     /// 
@@ -13,5 +9,10 @@ namespace StarCitizen.Gimp.Core
         /// 
         /// </summary>
         public string Email { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public long Id { get; set; }
     }
 }

@@ -1,5 +1,3 @@
-using System;
-
 namespace StarCitizen.Gimp.Web.Models
 {
     public class ErrorViewModel

@@ -2,11 +2,14 @@
 @using System.Linq
 @using Microsoft.AspNetCore.Http
 @using Microsoft.AspNetCore.Http.Authentication
+@using Microsoft.AspNetCore.Http.Features
 @model DeleteDiscordWebhookViewModel
 @{
     ViewData["Title"] = "Delete a Discord Webhook";
-    ViewData["MetaDescription"] = "Deregister from Star Citizen Gimp: A Discord Webhook bot that notifies you when there are updates to the RSI store and comm link feed.";
+    ViewData["MetaDescription"] = "Deregister from Star Citizen Gimp: A Discord Webhook bot that notifies you when there are updates to the RSI store, announcements on Spectrum or comm link feed.";
     ViewData["MetaKeywords"] = "Delete Discord Webhook";
+    ITrackingConsentFeature consentFeature = Context.Features.Get<ITrackingConsentFeature>();
+    bool canTrack = consentFeature?.CanTrack ?? false;
 }
 <script type="text/javascript">
     function onDeleteSilentRecaptcha(token) {
@@ -19,17 +22,24 @@
         }
     }
 </script>
-<form id="deleteForm" method="post">
-    <h1>Deregister a Discord Webhook</h1>
-    <p>Sick of getting notifications or angry at CIG? Enter your Discord Webhook URL here and click deregister.</p>
-    <div class="form-group">
-        <input id="urlInput" asp-for="Url" class="form-control" placeholder="https://discordapp.com/api/webhooks/{webhook.id}/{webhook.token}" />
-        <span asp-validation-for="Url" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <button id="deleteDiscordWebhookButton" class="btn btn-danger g-recaptcha" data-sitekey="6LfTs04UAAAAACgTFxJ-xpdArNtZL09cZA9mfPvq" data-callback="onDeleteSilentRecaptcha">Deregister</button>
-    </div>
-    <div class="form-group">
-        <p>@Model.Message</p>
-    </div>
-</form>
+@if (canTrack)
+{
+    <form id="deleteForm" method="post">
+        <h1>Deregister a Discord Webhook</h1>
+        <p>Sick of getting notifications or angry at CIG? Enter your Discord Webhook URL here and click deregister.</p>
+        <div class="form-group">
+            <input id="urlInput" asp-for="Url" class="form-control" placeholder="https://discordapp.com/api/webhooks/{webhook.id}/{webhook.token}" />
+            <span asp-validation-for="Url" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <button id="deleteDiscordWebhookButton" class="btn btn-danger g-recaptcha" data-sitekey="6LfTs04UAAAAACgTFxJ-xpdArNtZL09cZA9mfPvq" data-callback="onDeleteSilentRecaptcha">Deregister</button>
+        </div>
+        <div class="form-group">
+            @Html.Raw(Model.Message)
+        </div>
+    </form>
+}
+else
+{
+    @await Html.PartialAsync("_CookiesDisabledPartial")
+}

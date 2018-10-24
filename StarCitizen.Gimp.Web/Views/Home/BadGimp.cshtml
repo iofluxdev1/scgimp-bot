@@ -1,0 +1,36 @@
+﻿@using System.Collections.Generic
+@using System.Linq
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Http.Authentication
+@using Microsoft.AspNetCore.Http.Features
+@model BadGimpViewModel
+@{
+    ViewData["Title"] = "Bad gimp!";
+    ViewData["MetaDescription"] = "Has someting gone awry and the gimp is misbehaving? If 5 different users report that the gimp is malfunctioning within the last 30 minutes then it will be stopped and an administrator will be notified.";
+    ViewData["MetaKeywords"] = "stop,scgimp,spam,bug";
+    ITrackingConsentFeature consentFeature = Context.Features.Get<ITrackingConsentFeature>();
+    bool canTrack = consentFeature?.CanTrack ?? false;
+}
+<script type="text/javascript">
+    function onStopSilentRecaptcha(token) {
+
+        document.getElementById("stopForm").submit();
+    }
+</script>
+@if (canTrack)
+{
+    <form id="stopForm" method="post">
+        <h1>Stop the gimp!</h1>
+        <p>Has someting gone awry and the gimp is misbehaving? If 5 different users report that the gimp is malfunctioning within the last 30 minutes then it will be stopped and an administrator will be notified.</p>
+        <div class="form-group">
+            <button id="stopButton" class="btn btn-danger g-recaptcha" data-sitekey="6LfTs04UAAAAACgTFxJ-xpdArNtZL09cZA9mfPvq" data-callback="onStopSilentRecaptcha">Stop</button>
+        </div>
+        <div class="form-group">
+            @Html.Raw(Model.Message)
+        </div>
+    </form>
+}
+else
+{
+    @await Html.PartialAsync("_CookiesDisabledPartial")
+}

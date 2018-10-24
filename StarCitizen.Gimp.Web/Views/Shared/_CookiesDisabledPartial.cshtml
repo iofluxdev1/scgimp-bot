@@ -1,0 +1,25 @@
+﻿@using Microsoft.AspNetCore.Http.Features
+
+@{
+    ITrackingConsentFeature consentFeature = Context.Features.Get<ITrackingConsentFeature>();
+    string cookieString = consentFeature?.CreateConsentCookie();
+    string cookieConsentId = $"CookieConsent{DateTime.UtcNow.Ticks.ToString()}";
+}
+
+<div id="@cookieConsentId" class="alert alert-warning">
+    <h4>Cookies are disabled</h4>
+    <p>This website and its third-party tools use cookies, which are necessary to its functioning and required to achieve the purposes illustrated in the cookie policy.</p>
+    <div>
+        <a asp-controller="Home" asp-action="Privacy" class="btn btn-info navbar-btn">Learn More</a>
+        <button type="button" class="btn btn-default navbar-btn" data-cookie-string="@cookieString">Accept</button>
+    </div>
+</div>
+<script>
+        (function () {
+            document.querySelector("#@cookieConsentId button[data-cookie-string]").addEventListener("click", function (el) {
+                document.cookie = el.target.dataset.cookieString;
+                document.querySelector("#@cookieConsentId").classList.add("hidden");
+                onCookieConsent();
+            }, false);
+        })();
+</script>

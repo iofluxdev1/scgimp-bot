@@ -1,19 +1,47 @@
-﻿<h2><a id="donations"></a>Donations</h2>
-<p>This is a free service, but it does cost a bit to host the services in the cloud and as such any donations will be much appreciated and help towards keeping it online and maintained.</p>
-<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-    <input type="hidden" name="cmd" value="_s-xclick">
-    <input type="hidden" name="hosted_button_id" value="9HDYSEFYT6GEA">
-    <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-    <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
-</form>
-<br />
-<p>Balance: -$28</p>
-<p>Average monthly hosting costs: $55 (USD)</p>
-<h5>2018 April Patrons:</h5>
+﻿@using Microsoft.AspNetCore.Http.Features
+
+@{
+    ITrackingConsentFeature consentFeature = Context.Features.Get<ITrackingConsentFeature>();
+    bool canTrack = consentFeature?.CanTrack ?? false;
+}
+
+<h3>Deep Space Radar</h3>
+<p>If you like this bot please please go <a href="https://robertsspaceindustries.com/community/deep-space-radar/1679-Star-Citizen-Gimp">vote</a> for it on the <a href="https://robertsspaceindustries.com/community/deep-space-radar/1679-Star-Citizen-Gimp">RSI website</a>.</p>
+<h3>Patrons</h3>
+<p>The citizens who make this possible. Thank you so much for your support!</p>
 <ul>
-    <li>NA</li>
+    <li>
+        August 2018
+        <ul>
+            <li>Коломийцев Павел - $5</li>
+        </ul>
+    </li>
+    <li>
+        May 2018
+        <ul>
+            <li>Casper Schriver - $20</li>
+        </ul>
+    </li>
+    <li>
+        April 2018
+        <ul>
+            <li>Cory Braden - $5</li>
+        </ul>
+    </li>
 </ul>
-<h5>2018 March Patrons:</h5>
-<ul>
-    <li>NA</li>
-</ul>
+@if (canTrack)
+{
+    <h3><a id="donations"></a>Donations</h3>
+    <p>This is a free service, but it does cost a bit more to host the services in the cloud (about $80 USD per month) than what was initially anticipated and as such any donations will be much appreciated.</p>
+    <br />
+    <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+        <input type="hidden" name="cmd" value="_s-xclick">
+        <input type="hidden" name="hosted_button_id" value="9HDYSEFYT6GEA">
+        <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+        <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+    </form>
+}
+else
+{
+    @await Html.PartialAsync("_CookiesDisabledPartial")
+}

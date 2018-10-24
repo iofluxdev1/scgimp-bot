@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace StarCitizen.Gimp.Data
 {
@@ -25,5 +24,7 @@ namespace StarCitizen.Gimp.Data
         public DateTimeOffset UpdatedAt { get; set; }
 
         public DateTimeOffset? DeletedAt { get; set; }
+
+        public ICollection<SubscriberAudit> SubscriberAudits { get; set; }
     }
 }

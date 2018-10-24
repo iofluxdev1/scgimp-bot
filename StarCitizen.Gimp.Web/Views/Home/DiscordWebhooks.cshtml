@@ -2,11 +2,14 @@
 @using System.Linq
 @using Microsoft.AspNetCore.Http
 @using Microsoft.AspNetCore.Http.Authentication
+@using Microsoft.AspNetCore.Http.Features
 @model AddDiscordWebhookViewModel
 @{
-    ViewData["Title"] = "Register your Discord Webhook";
-    ViewData["MetaDescription"] = "Star Citizen Gimp: A bot that supports Discord Webhooks to message you when there are updates to the RSI store and comm link feed so you never miss out on new content and promotions.";
+    ViewData["Title"] = "Register your Discord Webhook for automatic ship sale notifcations, comm-link updates and more";
+    ViewData["MetaDescription"] = "Star Citizen Gimp: A bot that supports Discord Webhooks to message you when there are updates to the RSI store, announcements on Spectrum or comm link feed so you never miss out on new content and promotions.";
     ViewData["MetaKeywords"] = "Register,Star Citizen Gimp,ScGimp,SC Gimp,Star Citizen,Discord,Webhooks,Discord Webhooks,Notifications,Bot,Sales Monitor, Detect Changes,Crawl,Early Warning, Star Citizen shop notifications,Sale automatic email,Sale automatic notifications,Automatic notification email";
+    ITrackingConsentFeature consentFeature = Context.Features.Get<ITrackingConsentFeature>();
+    bool canTrack = consentFeature?.CanTrack ?? false;
 }
 <script type="text/javascript">
     function onAddSilentRecaptcha(token) {
@@ -20,19 +23,27 @@
     }
 </script>
 <h1>Discord Webhooks</h1>
-<p>The Star Citizen Gimp bot supports Discord Webhooks as a notification medium. See the <a href="https://support.discordapp.com/hc/en-us/articles/228383668-Intro-to-Webhooks">Discord online documentation</a> for more on <a href="https://support.discordapp.com/hc/en-us/articles/228383668-Intro-to-Webhooks">Discord Webhooks</a>.</p>
-<form id="addForm" method="post">
-    <h2>Register your Webhook</h2>
-    <div class="form-group">
-        <input id="urlInput" asp-for="Url" class="form-control" placeholder="https://discordapp.com/api/webhooks/{webhook.id}/{webhook.token}" />
-        <span asp-validation-for="Url" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <button id="registerSubscriberButton" class="btn btn-primary g-recaptcha" data-sitekey="6LfTs04UAAAAACgTFxJ-xpdArNtZL09cZA9mfPvq" data-callback="onAddSilentRecaptcha">Register</button>
-    </div>
-    <div class="form-group">
-        <p>@Model.Message</p>
-    </div>
-</form>
+<p>The Star Citizen Gimp bot supports Discord Webhooks as a notification medium as well as <a asp-area="" asp-controller="Home" asp-action="Subscribe">email</a>. See the <a href="https://support.discordapp.com/hc/en-us/articles/228383668-Intro-to-Webhooks">Discord online documentation</a> for more on <a href="https://support.discordapp.com/hc/en-us/articles/228383668-Intro-to-Webhooks">Discord Webhooks</a>.</p>
+@if (canTrack)
+{
+    <form id="addForm" method="post">
+        <h2>Register your Webhook</h2>
+        <div class="form-group">
+            <input id="urlInput" asp-for="Url" class="form-control" placeholder="https://discordapp.com/api/webhooks/{webhook.id}/{webhook.token}" />
+            <span asp-validation-for="Url" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <button id="registerSubscriberButton" class="btn btn-primary g-recaptcha" data-sitekey="6LfTs04UAAAAACgTFxJ-xpdArNtZL09cZA9mfPvq" data-callback="onAddSilentRecaptcha">Register</button>
+        </div>
+        <div class="form-group">
+            @Html.Raw(Model.Message)
+        </div>
+    </form>
+}
+else
+{
+    @await Html.PartialAsync("_CookiesDisabledPartial")
+}
+<h3>Filtered Content</h3>
+<p>All CCUs are filtered out from the Discord channel as they can generate a lot of spam, especially if it is not in its own channel. If you wish to get notifications for CCU changes then please <a asp-area="" asp-controller="Home" asp-action="Subscribe">subscribe by email</a>.</p>
 @await Html.PartialAsync("_DonatePartial")
-@await Html.PartialAsync("_StatsPartial", Model.Stats)

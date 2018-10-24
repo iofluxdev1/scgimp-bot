@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace StarCitizen.Gimp.Core
+﻿namespace StarCitizen.Gimp.Core
 {
     public class ScGimpNotification
     {

@@ -1,12 +1,8 @@
-﻿using JetBrains.Annotations;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
+﻿using Microsoft.EntityFrameworkCore;
 using StarCitizen.Gimp.Core;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace StarCitizen.Gimp.Data
@@ -33,7 +29,11 @@ namespace StarCitizen.Gimp.Data
                     from s in db.DiscordWebhooks
                     where
                         s.DeletedAt == null
-                    select new ScGimpDiscordWebhook() { Url = s.Url }
+                    select new ScGimpDiscordWebhook()
+                    {
+                        Url = s.Url,
+                        Id = s.DiscordWebhookId
+                    }
                 );
 
                 return await discordWebhooks.ToArrayAsync();
@@ -41,16 +41,30 @@ namespace StarCitizen.Gimp.Data
         }
 
 
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         /// <summary>
         /// 
         /// </summary>
         /// <param name="discordWebhook"></param>
         /// <returns></returns>
         public async Task DeleteAsync(ScGimpDiscordWebhook discordWebhook)
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
-            throw new NotImplementedException();
+            using (ScGimpContext db = new ScGimpContext())
+            {
+                DiscordWebhook dbDiscordWebhook = await
+                (
+                    from s in db.DiscordWebhooks
+                    where
+                        s.DiscordWebhookId == discordWebhook.Id
+                    select s
+                ).FirstOrDefaultAsync();
+
+                if (dbDiscordWebhook != null)
+                {
+                    dbDiscordWebhook.DeletedAt = DateTimeOffset.Now;
+
+                    await db.SaveChangesAsync();
+                }
+            }
         }
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
@@ -78,7 +92,11 @@ namespace StarCitizen.Gimp.Data
                     from s in db.Subscribers
                     where
                         s.DeletedAt == null
-                    select new ScGimpSubscriber() { Email = s.Email }
+                    select new ScGimpSubscriber()
+                    {
+                        Email = s.Email,
+                        Id = s.SubscriberId
+                    }
                 );
 
                 return await subscribers.ToArrayAsync();
@@ -118,12 +136,13 @@ namespace StarCitizen.Gimp.Data
                 (
                     new Notification()
                     {
-                        Body = logEntry.Body,
+                        Body = logEntry.Body.Left(4000),
                         CreatedAt = DateTimeOffset.Now,
-                        Items = logEntry.Items,
+                        Items = logEntry.Items.Left(4000),
                         NotificationId = 0,
-                        NotificationType = logEntry.NotificationType,
-                        Recipients = logEntry.Recipients
+                        NotificationType = logEntry.NotificationType.Left(50),
+                        Recipients = logEntry.Recipients.Left(4000),
+                        Medium = logEntry.Medium.Left(50)
                     }
                 );
 

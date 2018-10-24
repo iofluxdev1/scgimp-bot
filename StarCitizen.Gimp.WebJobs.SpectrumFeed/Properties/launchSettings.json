@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "StarCitizen.Gimp.WebJobs.SpectrumFeed": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

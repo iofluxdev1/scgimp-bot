@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace StarCitizen.Gimp.Core.UnitTest
@@ -13,8 +12,7 @@ namespace StarCitizen.Gimp.Core.UnitTest
         {
             return new ScGimpDiscordWebhook[]
             {
-                new ScGimpDiscordWebhook() { Url = "https://discordapp.com/api/webhooks/429370121493151756/vpoJuRKmwBFNrktG5y8j1v_ln9VyZlCGitTTavN_2VvDmDzS7mPZIshroiqyVhCQo5CU" },
-                new ScGimpDiscordWebhook() { Url = "invalid garbage" }
+                new ScGimpDiscordWebhook() { Url = "https://discordapp.com/api/webhooks/434113045480996865/loUia2dzz1eC0TOPQFFD65GA1AJKuX3fJgx-l9MegxjPiJS_GgRFqLbLxlQTmqZfLOYF", Id = 1L }
             };
         }
 
@@ -25,15 +23,7 @@ namespace StarCitizen.Gimp.Core.UnitTest
         {
             return new ScGimpSubscriber[]
             {
-                new ScGimpSubscriber() { Email = "changetoyourownvalidemail@hotmail.co.uk" },
-                new ScGimpSubscriber() { Email = "bademail@hotmail.co" },
-                new ScGimpSubscriber() { Email = "bademail@hotmail" },
-                new ScGimpSubscriber() { Email = "@hotmail.co.za" },
-                new ScGimpSubscriber() { Email = "hotmail.co.za" },
-                new ScGimpSubscriber() { Email = "co.za" },
-                new ScGimpSubscriber() { Email = "hotmail.co" },
-                new ScGimpSubscriber() { Email = "hotmail" },
-                new ScGimpSubscriber() { Email = "@hotmail" }
+                new ScGimpSubscriber() { Email = "aspruyt@hotmail.co.uk", Id = 1L }
             };
         }
 

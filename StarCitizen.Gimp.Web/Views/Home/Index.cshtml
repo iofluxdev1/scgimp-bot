@@ -2,91 +2,50 @@
 @using System.Linq
 @using Microsoft.AspNetCore.Http
 @using Microsoft.AspNetCore.Http.Authentication
+@using Microsoft.AspNetCore.Http.Features
 @model SubscribeViewModel
 @{
-    ViewData["MetaDescription"] = "Subscribe to Star Citizen Gimp: A bot that notifies you when there are updates to the RSI store and comm link feed so you never miss out on new content and promotions.";
-    ViewData["MetaKeywords"] = "Subscribe,Star Citizen Gimp,ScGimp,SC Gimp,Star Citizen,Notifications,Bot,Sales Monitor, Detect Changes,Crawl,Early Warning, Star Citizen shop notifications,Sale automatic email,Sale automatic notifications,Automatic notification email";
+    ViewData["Title"] = "Get real time notifications for ship sales, announcements, patch notes and more";
+    ViewData["MetaDescription"] = "Star Citizen Gimp: A bot that notifies you when there are updates to the RSI store, announcements on Spectrum or comm link feed so you never miss out on new content and promotions.";
+    ViewData["MetaKeywords"] = "Star Citizen Gimp,ScGimp,SC Gimp,Star Citizen,notifications,bot,sales monitor,detect changes,crawl,early warning,Star Citizen shop notifications,sale automatic email,automatic notifications,automatic notification";
+    ITrackingConsentFeature consentFeature = Context.Features.Get<ITrackingConsentFeature>();
+    bool canTrack = consentFeature?.CanTrack ?? false;
 }
+
 <script type="text/javascript">
     function onSubscribeSilentRecaptcha(token) {
 
         $("#subscribeForm").validate().element("#emailInput");
 
-        if ($("#subscribeForm").valid()) { 
+        if ($("#subscribeForm").valid()) {
 
             document.getElementById('subscribeForm').submit();
         }
     }
 </script>
-<form id="subscribeForm" method="post">
-    <h1>Subscribe now</h1>
-    <div class="form-group">
-        <input id="emailInput" asp-for="Email" class="form-control" placeholder="john@doe.com" />
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <button id="subscribeButton" class="btn btn-primary g-recaptcha" data-sitekey="6LfTs04UAAAAACgTFxJ-xpdArNtZL09cZA9mfPvq" data-callback="onSubscribeSilentRecaptcha">Subscribe</button>
-    </div>
-    <div class="form-group">
-        <p>@Model.Message</p>
-    </div>
-</form>
-<h2>What is Star Citizen Gimp?</h2>
-<p>Star Citizen Gimp is a bot that notifies a subscriber whenever it detects new products on the RSI store as well as new articles from the comm link feed.</p>
-<h2>Why would I use it?</h2>
-<p>Because CIG is notorious for sending out no communication regarding promotions or hours after promotions and or content was released on the website the following use cases apply:</p>
-<ul>
-    <li>if you are sick of missing out on limited hull ship sales,</li>
-    <li>if you want to be a contender to post FIRST on an article</li>
-    <li>or if you simply have a problem like many other citizens in that you can't help but throw your wallet at the RSI store each time something new comes along then this is for you!</li>
-</ul>
-<h2>Example notification</h2>
-<p>Automated notifications are sent by email and Discord Webhooks immediately after any changes are detected and the following is an example of the content of a Star Citizen Gimp notification:</p>
-<div class="jumbotron">
-    <div>
-        <p>Greetings Citizen,</p>
-        <p>The following content update(s) were detected on RSI:</p>
-        <div>
-            1. <a href="https://www.robertsspaceindustries.com/pledge/Upgrades/Freelancer-MAX-To-Razor-Upgrade" alt="Freelancer MAX to Razor Upgrade - Ship Upgrades">
-                Freelancer MAX to Razor Upgrade - Ship Upgrades
-            </a> USD 5
+<h1>Star Citizen Gimp</h1>
+<p>Star Citizen Gimp is a bot that notifies a subscriber whenever it detects new products on the RSI store, announcements on Spectrum or new articles in the comm link feed. <a asp-area="" asp-controller="Home" asp-action="About">Click here for more information about the bot</a>.</p>
+@if (canTrack)
+{
+    <form id="subscribeForm" method="post">
+        <h2>Subscribe by Email</h2>
+        <div class="form-group">
+            <input id="emailInput" asp-for="Email" class="form-control" placeholder="john@doe.com" />
+            <span asp-validation-for="Email" class="text-danger"></span>
         </div>
-        <div>
-            2. <a href="https://www.robertsspaceindustries.com/pledge/Upgrades/F7C-R-Hornet-Tracker-To-Razor-Upgrade" alt="F7C-R Hornet Tracker to Razor Upgrade - Ship Upgrades">
-                F7C-R Hornet Tracker to Razor Upgrade - Ship Upgrades
-            </a> USD 5
+        <div class="form-group">
+            <button id="subscribeButton" class="btn btn-primary g-recaptcha" data-sitekey="6LfTs04UAAAAACgTFxJ-xpdArNtZL09cZA9mfPvq" data-callback="onSubscribeSilentRecaptcha">Subscribe</button>
         </div>
-        <div>
-            3. <a href="https://www.robertsspaceindustries.com/pledge/Upgrades/350r-To-MISC-Razor-Upgrade" alt="350r to MISC Razor Upgrade - Ship Upgrades">
-                350r to MISC Razor Upgrade - Ship Upgrades
-            </a> USD 20
+        <div class="form-group">
+            @Html.Raw(Model.Message)
         </div>
-        <div>
-            4. <a href="https://www.robertsspaceindustries.com/pledge/Upgrades/Freelancer-DUR-To-MISC-Razor-Upgrade" alt="Freelancer DUR to MISC Razor Upgrade - Ship Upgrades">
-                Freelancer DUR to MISC Razor Upgrade - Ship Upgrades
-            </a> USD 20
-        </div>
-        <div>
-            5. <a href="https://www.robertsspaceindustries.com/pledge/Upgrades/F7C-S-Hornet-Ghost-To-MISC-Razor-Upgrade" alt="F7C-S Hornet Ghost to MISC Razor Upgrade - Ship Upgrades">
-                F7C-S Hornet Ghost to MISC Razor Upgrade - Ship Upgrades
-            </a> USD 20
-        </div>
-        ...
-    </div>
-</div>
+    </form>
+}
+else
+{
+    @await Html.PartialAsync("_CookiesDisabledPartial")
+}
 <h2>Discord Webhooks</h2>
-<p>Discord Webhooks are also supported by the Star Citizen Gimp bot. <a asp-area="" asp-controller="Home" asp-action="DiscordWebhooks">Click here to register</a> a Discord Webhook which will allow Star Citizen Gimp to push notifications to a channel on your Discord Server.</p>
-<h2>Security &amp; Privacy</h2>
-<p>We take security very seriously and do our best to protect your email address;</p>
-<ul>
-    <li>The site supports SSL, so when you submit your email address it is encrypted and it is also protected by CSRF to make sure it is not intercepted or submitted by someone else.</li>
-    <li>Your email address is also encrypted on the datastore level which only the website and the bot has access to and it only decrypts the email addresses when sending notifications when updates are detected.</li>
-    <li>No data is shared to any 3rd parties other than Google for analytics as per our privacy policy.</li>
-</ul>
-<h4>Recommentations for the super paranoid</h4>
-<p>If you are extremely paranoid then you can also consider not using your main email address (the one that you use for Star Citizen) and rather use a new alias or address that gets forwarded to your main address.</p>
-<p>Alternatively there is also a very early console version of the bot that can be run locally and the source code can be found <a href="https://github.com/scgimp/scgimp-bot">here</a> for those who don't trust anything (what are you even doing on the internet, DANGER DANGER Will Robinson!?) or those who want to modify and extend it for their own use.</p>
-<h2>Toubleshooting</h2>
-<p>If you are not receiving email notifications make sure that you subscribed with the correct email address and that the sender address noreply@scgimp.com is whitelisted and does not end up in in your junk folder. If you are still stuck you are welcome to send an email to <a href="mailto:scgimp@ioflux.co.za">scgimp@ioflux.co.za</a> for technical support and we will see if we can help you.</p>
-@await Html.PartialAsync("_DonatePartial")
+<p>Discord Webhooks are also supported by the Star Citizen Gimp bot. <a asp-area="" asp-controller="Home" asp-action="DiscordWebhooks">Click here to register a Discord Webhook</a> which will allow Star Citizen Gimp to push notifications to a channel on your Discord Server.</p>
 @await Html.PartialAsync("_StatsPartial", Model.Stats)
+@await Html.PartialAsync("_DonatePartial")

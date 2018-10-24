@@ -18,10 +18,10 @@
     "StarCitizen.Gimp.Web": {
       "commandName": "Project",
       "launchBrowser": true,
+      "applicationUrl": "https://localhost:5613;http://localhost:5612",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "applicationUrl": "http://localhost:5612/"
+      }
     }
   }
 }

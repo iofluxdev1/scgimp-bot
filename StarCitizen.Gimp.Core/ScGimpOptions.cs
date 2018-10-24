@@ -1,19 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net.Mail;
-using System.Text;
 
 namespace StarCitizen.Gimp.Core
 {
     /// <summary>
     /// 
     /// </summary>
-    public struct ScGimpOptions
+    public class ScGimpOptions
     {
-        /// <summary>
-        /// The timespan to sleep for inbetween polling.
-        /// </summary>
         public TimeSpan Sleep { get; set; }
+
+        public double AfterHoursSleepMultiplier { get; set; }
+
+        public double OutsideCommLinkSleepMultiplier { get; set; }
+
+        public TimeSpan CigWorkingHoursStart { get; set; }
+
+        public TimeSpan CigWorkingHoursEnd { get; set; }
+
+        public TimeSpan CigCommLinkEnd { get; set; }
+
+        public TimeSpan CigCommLinkStart { get; set; }
 
         /// <summary>
         /// SMTP host.
@@ -56,6 +63,11 @@ namespace StarCitizen.Gimp.Core
         public SmtpDeliveryMethod? DeliveryMethod { get; set; }
 
         /// <summary>
+        /// The optional process type. If no process type is specified all types will be monitored.
+        /// </summary>
+        public ScGimpProcessType? ProcessType { get; set; }
+
+        /// <summary>
         /// SMTP target name.
         /// </summary>
         public string TargetName { get; set; }
@@ -64,5 +76,27 @@ namespace StarCitizen.Gimp.Core
         /// The SMTP from address.
         /// </summary>
         public string From { get; set; }
+
+        public ScGimpOptions()
+        {
+            ProcessType = null;
+            DeliveryMethod = null;
+            Domain = null;
+            EnableSsl = null;
+            From = null;
+            Host = null;
+            Password = null;
+            Port = null;
+            Sleep = TimeSpan.FromSeconds(1d);
+            TargetName = null;
+            UseDefaultCredentials = null;
+            Username = null;
+            AfterHoursSleepMultiplier = 1200d;
+            CigWorkingHoursEnd = TimeSpan.FromHours(18d);
+            CigWorkingHoursStart = TimeSpan.FromHours(8d);
+            CigCommLinkEnd = TimeSpan.FromHours(14d);
+            CigCommLinkStart = TimeSpan.FromHours(11d);
+            OutsideCommLinkSleepMultiplier = 120d;
+        }
     }
 }

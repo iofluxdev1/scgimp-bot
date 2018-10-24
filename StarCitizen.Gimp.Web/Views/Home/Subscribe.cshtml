@@ -1,0 +1,57 @@
+﻿@using System.Collections.Generic
+@using System.Linq
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Http.Authentication
+@using Microsoft.AspNetCore.Http.Features
+@model SubscribeViewModel
+@{
+    ViewData["Title"] = "Subscribe for automatic ship sale, comm-link notifications and more";
+    ViewData["MetaDescription"] = "Subscribe to Star Citizen Gimp: A bot that notifies you when there are updates to the RSI store, annoucements on Spectrum or comm link feed so you never miss out on new content and promotions.";
+    ViewData["MetaKeywords"] = "Subscribe,Star Citizen Gimp,ScGimp,SC Gimp,Star Citizen,Notifications,Bot,Sales Monitor, Detect Changes,Crawl,Early Warning, Star Citizen shop notifications,Sale automatic email,Sale automatic notifications,Automatic notification email";
+    ITrackingConsentFeature consentFeature = Context.Features.Get<ITrackingConsentFeature>();
+    bool canTrack = consentFeature?.CanTrack ?? false;
+}
+<script type="text/javascript">
+    function onSubscribeSilentRecaptcha(token) {
+
+        $("#subscribeForm").validate().element("#emailInput");
+
+        if ($("#subscribeForm").valid()) {
+
+            document.getElementById('subscribeForm').submit();
+        }
+    }
+</script>
+<h1>Email Notifications</h1>
+<p>The Star Citizen Gimp bot supports email as a notification medium as well as <a asp-area="" asp-controller="Home" asp-action="DiscordWebhooks">Discord Webhooks</a>.</p>
+@if (canTrack)
+{
+    <form id="subscribeForm" method="post">
+        <h2>Subscribe</h2>
+        <div class="form-group">
+            <input id="emailInput" asp-for="Email" class="form-control" placeholder="john@doe.com" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <button id="subscribeButton" class="btn btn-primary g-recaptcha" data-sitekey="6LfTs04UAAAAACgTFxJ-xpdArNtZL09cZA9mfPvq" data-callback="onSubscribeSilentRecaptcha">Subscribe</button>
+        </div>
+        <div class="form-group">
+            @Html.Raw(Model.Message)
+        </div>
+    </form>
+}
+else
+{
+    @await Html.PartialAsync("_CookiesDisabledPartial")
+}
+<h3>Security &amp; Privacy</h3>
+<p>We take security very seriously and do our best to protect your email address;</p>
+<ul>
+    <li>The site supports SSL, so when you submit your email address it is encrypted and it is also protected by CSRF.</li>
+    <li>No data is shared to any 3rd parties other than for analytics and protection against bots as per our privacy policy.</li>
+</ul>
+<h4>Security recommendations &amp; alternate options</h4>
+<p>A good precaution to take is to not subscribe with the email address that you registered with for Star Citizen and rather use a new alias or address that gets forwarded to your main address.</p>
+<h3>Toubleshooting</h3>
+<p>If you are not receiving email notifications make sure that you subscribed with the correct email address and that the sender address noreply@scgimp.com is whitelisted and does not end up in your junk folder.</p>
+@await Html.PartialAsync("_DonatePartial")

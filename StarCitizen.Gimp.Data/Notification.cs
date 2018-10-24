@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace StarCitizen.Gimp.Data
 {
@@ -21,6 +19,7 @@ namespace StarCitizen.Gimp.Data
         public string Medium { get; set; }
 
         [Required]
+        // This will overflow very quickly
         public string Recipients { get; set; }
 
         [Required]

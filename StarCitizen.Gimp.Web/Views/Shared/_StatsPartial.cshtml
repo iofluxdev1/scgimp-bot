@@ -1,16 +1,12 @@
 ﻿@model ScGimpStatsViewModel
 
-<div>
-    <h2>Stats</h2>
-    Total active email subscribers: @Model.TotalActiveEmailSubscribers<br />
-    Total active Discord Webhook subscribers: @Model.TotalActiveDiscordWebhookSubscribers
-</div>
 @if (Model.NotificationLog != null
   && Model.NotificationLog.Any())
 {
 
     <div>
-        <h2>Recent Notifications</h2>
+        <h2>Notification History</h2>
+        <p>Last @Model.NotificationLog.Count().ToString() notifications sent by the bot:</p>
         <table class="table">
             <thead>
                 <tr>
@@ -18,14 +14,13 @@
                     <th scope="col">Medium</th>
                     <th scope="col">Type</th>
                     <th scope="col">Content</th>
-                    <th scope="col">Total Recipients</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model.NotificationLog)
                 {
                     <tr>
-                        <td>@item.CreatedAt.UtcDateTime.ToString()</td>
+                        <td>@item.CreatedAt.ToString("r")</td>
                         <td>@item.Medium</td>
                         <td>@item.NotificationType</td>
                         <td>
@@ -37,16 +32,27 @@
                                 <ul class="dropdown-menu dropdown-menu-right">
                                     <li>
                                         <div style="padding: 20px; min-width: 250px;">
-                                            @Html.Raw(item.Body)
+                                            @if (item.Body.Length < 4000)
+                                            {
+                                                @Html.Raw(item.Body)
+                                            }
+                                            else
+                                            {
+                                                @item.Body
+                                            }
                                         </div>
                                     </li>
                                 </ul>
                             </div>
                         </td>
-                        <td>@item.TotalRecipients.ToString()</td>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
 }
+    <div>
+        <h3>Subscribers</h3>
+        Total active email subscribers: @Model.TotalActiveEmailSubscribers<br />
+        Total active Discord Webhook subscribers: @Model.TotalActiveDiscordWebhookSubscribers
+    </div>

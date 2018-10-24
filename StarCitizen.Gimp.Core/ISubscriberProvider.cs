@@ -6,26 +6,26 @@ namespace StarCitizen.Gimp.Core
     /// <summary>
     /// 
     /// </summary>
-    public interface IDiscordWebhookProvider
+    public interface ISubscriberProvider
     {
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        Task<IEnumerable<ScGimpDiscordWebhook>> GetDiscordWebhooksAsync();
+        Task<IEnumerable<ScGimpSubscriber>> GetSubscribersAsync();
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="discordWebhook"></param>
+        /// <param name="subscriber"></param>
         /// <returns></returns>
-        Task RegisterAsync(ScGimpDiscordWebhook discordWebhook);
+        Task SubscribeAsync(ScGimpSubscriber subscriber);
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="discordWebhook"></param>
+        /// <param name="subscriber"></param>
         /// <returns></returns>
-        Task DeleteAsync(ScGimpDiscordWebhook discordWebhook);
+        Task UnsubscribeAsync(ScGimpSubscriber subscriber);
     }
 }

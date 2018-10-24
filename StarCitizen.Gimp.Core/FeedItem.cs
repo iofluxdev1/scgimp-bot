@@ -48,7 +48,7 @@ namespace StarCitizen.Gimp.Core
         /// <summary>
         /// 
         /// </summary>
-        public DateTime PublishDate { get; set; }
+        public DateTimeOffset PublishDate { get; set; }
 
         /// <summary>
         /// 
@@ -86,11 +86,11 @@ namespace StarCitizen.Gimp.Core
         /// </summary>
         /// <param name="date"></param>
         /// <returns></returns>
-        private DateTime ParseDate(string date)
+        private DateTimeOffset ParseDate(string date)
         {
-            if (!DateTime.TryParse(date, out DateTime result))
+            if (!DateTimeOffset.TryParse(date, out DateTimeOffset result))
             {
-                result = DateTime.MinValue;
+                result = DateTimeOffset.MinValue;
             }
 
             return result;

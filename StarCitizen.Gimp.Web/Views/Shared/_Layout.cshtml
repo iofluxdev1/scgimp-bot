@@ -1,6 +1,11 @@
-﻿@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
-@{ 
+﻿@using Microsoft.AspNetCore.Http.Features
+@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
+@{
     string Title = string.IsNullOrWhiteSpace((string)ViewData["Title"]) ? "Star Citizen Gimp" : $"{ViewData["Title"]} - Star Citizen Gimp";
+    ITrackingConsentFeature consentFeature = Context.Features.Get<ITrackingConsentFeature>();
+    bool canTrack = consentFeature?.CanTrack ?? false;
+    string userAgent = Context.Request.Headers["User-Agent"];
+    bool isGoogleBot = userAgent?.ToLowerInvariant().Contains("google page speed insights") ?? false;
 }
 <!DOCTYPE html>
 <html prefix="og: http://ogp.me/ns#">
@@ -18,29 +23,41 @@
     <meta property="og:image:height" content="120" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@Title</title>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-65901374-3"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
+    @if (!isGoogleBot)
+    {
+        <!-- Stylesheets -->
+        <environment include="Development">
+            <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" async />
+            <link rel="stylesheet" href="~/css/site.css" async />
+            <link rel="stylesheet" href="~/css/cookies.css" async />
+        </environment>
+        <environment exclude="Development">
+            @*<link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
+                asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+                asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />*@
+            <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" async />
+            <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" async />
+        </environment>
+    }
+    @if (canTrack)
+    {
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-65901374-3"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() { dataLayer.push(arguments); }
+            gtag('js', new Date());
 
-        gtag('config', 'UA-65901374-3');
-    </script>
-    <environment include="Development">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        <link rel="stylesheet" href="~/css/site.css" />
-    </environment>
-    <environment exclude="Development">
-        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
-              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
-    </environment>
-    @Html.Raw(JavaScriptSnippet.FullScript)
-    <script src='https://www.google.com/recaptcha/api.js' async defer></script>
+            gtag('config', 'UA-65901374-3');
+        </script>
+        <!-- Application Insights -->
+        @Html.Raw(JavaScriptSnippet.FullScript)
+        <!-- Google ReCaptcha -->
+        <script src='https://www.google.com/recaptcha/api.js' async defer></script>
+    }
 </head>
 <body>
+    <!-- Nav -->
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -50,47 +67,69 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Star Citizen Gimp</a>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">scgimp</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Subscribe">Subscribe</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="DiscordWebhooks">Discord Webhooks</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Unsubscribe">Unsubscribe</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="DeleteDiscordWebhook">Deregister Webhook</a></li>
+                    <li class="hidden-sm"><a asp-area="" asp-controller="Home" asp-action="About">about</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Subscribe">subscribe<span class="hidden-sm"> email</span></a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Unsubscribe">unsubscribe<span class="hidden-sm"> email</span></a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="DiscordWebhooks">register webhook</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="DeleteDiscordWebhook">deregister webhook</a></li>
+                    <li class="hidden-md hidden-sm"><a asp-area="" asp-controller="Home" asp-action="ReferralCode">referral code</a></li>
                 </ul>
             </div>
         </div>
     </nav>
+    <!-- Cookie consent -->
+    @await Html.PartialAsync("_CookieConsentPartial")
+    <!-- Content -->
     <div class="container body-content">
         @RenderBody()
         <hr />
         <footer>
-            &copy; 2018 - Star Citizen Gimp | <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy Policy</a>
+            <span><a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy Policy</a></span>
         </footer>
     </div>
-
+    @if (isGoogleBot)
+    {
+        <!-- Stylesheets -->
+        <environment include="Development">
+            <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" async />
+            <link rel="stylesheet" href="~/css/site.css" async />
+            <link rel="stylesheet" href="~/css/cookies.css" async />
+        </environment>
+        <environment exclude="Development">
+            @*<link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
+                asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+                asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />*@
+            <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" async />
+            <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" async />
+        </environment>
+    }
+    <!-- Scripts -->
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
     <environment exclude="Development">
-        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
-                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                asp-fallback-test="window.jQuery"
-                crossorigin="anonymous"
-                integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
-        </script>
-        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
-                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
-                crossorigin="anonymous"
-                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
-        </script>
+        @*<script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
+                    asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                    asp-fallback-test="window.jQuery"
+                    crossorigin="anonymous"
+                    integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
+            </script>
+            <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
+                    asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                    asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                    crossorigin="anonymous"
+                    integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
+            </script>*@
+        <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.min.js" asp-append-version="true"></script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
-
     @RenderSection("Scripts", required: false)
     @await Html.PartialAsync("_ValidationScriptsPartial")
 </body>

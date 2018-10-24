@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace StarCitizen.Gimp.Core
 {
     /// <summary>
     /// 
     /// </summary>
-    public class StoreFeedUpdateEventArgs : BandwidthEventArgs
+    public class StoreFeedUpdateEventArgs
     {
         /// <summary>
         /// 
@@ -17,8 +15,7 @@ namespace StarCitizen.Gimp.Core
         /// <summary>
         /// 
         /// </summary>
-        public StoreFeedUpdateEventArgs() :
-            base()
+        public StoreFeedUpdateEventArgs()
         {
             Items = new StoreItem[0];
         }
@@ -27,10 +24,7 @@ namespace StarCitizen.Gimp.Core
         /// 
         /// </summary>
         /// <param name="items"></param>
-        /// <param name="totalContentLength"></param>
-        /// <param name="contentLength"></param>
-        public StoreFeedUpdateEventArgs(IEnumerable<StoreItem> items, long totalContentLength, long contentLength) :
-            base(totalContentLength, contentLength)
+        public StoreFeedUpdateEventArgs(IEnumerable<StoreItem> items)
         {
             Items = items ?? new StoreItem[0];
         }

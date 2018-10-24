@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /cgi-bin/
+Disallow: /home/error/
+Disallow: /test/
+Disallow: /home/index/
+Disallow: /home/privacy/
+Sitemap: https://scgimp.com/sitemap.xml
