@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2011
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StarCitizen.Gimp.Core", "StarCitizen.Gimp.Core\StarCitizen.Gimp.Core.csproj", "{D878C1F1-2C43-419D-B6ED-E03AAE7438F7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StarCitizen.Gimp.Core.UnitTest", "StarCitizen.Gimp.Core.UnitTest\StarCitizen.Gimp.Core.UnitTest.csproj", "{FB40BBA6-0548-491D-98DB-C51AE7CBFEC1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StarCitizen.Gimp.Console", "StarCitizen.Gimp.Console\StarCitizen.Gimp.Console.csproj", "{4AD8F4FB-3965-476A-82B9-2228CEA464C0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StarCitizen.Gimp.WebJobs", "StarCitizen.Gimp.WebJobs\StarCitizen.Gimp.WebJobs.csproj", "{F2584C52-B794-4011-808F-E7079E573973}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StarCitizen.Gimp.Data", "StarCitizen.Gimp.Data\StarCitizen.Gimp.Data.csproj", "{4BB998CD-838A-4160-8A0D-2DA5D158109B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StarCitizen.Gimp.Web", "StarCitizen.Gimp.Web\StarCitizen.Gimp.Web.csproj", "{C66AB910-22FC-4FCA-8A39-C3A395A3F0AE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D878C1F1-2C43-419D-B6ED-E03AAE7438F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D878C1F1-2C43-419D-B6ED-E03AAE7438F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D878C1F1-2C43-419D-B6ED-E03AAE7438F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D878C1F1-2C43-419D-B6ED-E03AAE7438F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB40BBA6-0548-491D-98DB-C51AE7CBFEC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB40BBA6-0548-491D-98DB-C51AE7CBFEC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB40BBA6-0548-491D-98DB-C51AE7CBFEC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB40BBA6-0548-491D-98DB-C51AE7CBFEC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AD8F4FB-3965-476A-82B9-2228CEA464C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AD8F4FB-3965-476A-82B9-2228CEA464C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AD8F4FB-3965-476A-82B9-2228CEA464C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AD8F4FB-3965-476A-82B9-2228CEA464C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2584C52-B794-4011-808F-E7079E573973}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2584C52-B794-4011-808F-E7079E573973}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2584C52-B794-4011-808F-E7079E573973}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2584C52-B794-4011-808F-E7079E573973}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BB998CD-838A-4160-8A0D-2DA5D158109B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BB998CD-838A-4160-8A0D-2DA5D158109B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BB998CD-838A-4160-8A0D-2DA5D158109B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BB998CD-838A-4160-8A0D-2DA5D158109B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C66AB910-22FC-4FCA-8A39-C3A395A3F0AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C66AB910-22FC-4FCA-8A39-C3A395A3F0AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C66AB910-22FC-4FCA-8A39-C3A395A3F0AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C66AB910-22FC-4FCA-8A39-C3A395A3F0AE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {134305A0-5257-4F15-BDAF-B834A32634AA}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,38 @@
+﻿@using System.Collections.Generic
+@using System.Linq
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Http.Authentication
+@model AddDiscordWebhookViewModel
+@{
+    ViewData["Title"] = "Register your Discord Webhook";
+    ViewData["MetaDescription"] = "Star Citizen Gimp: A bot that supports Discord Webhooks to message you when there are updates to the RSI store and comm link feed so you never miss out on new content and promotions.";
+    ViewData["MetaKeywords"] = "Register,Star Citizen Gimp,ScGimp,SC Gimp,Star Citizen,Discord,Webhooks,Discord Webhooks,Notifications,Bot,Sales Monitor, Detect Changes,Crawl,Early Warning, Star Citizen shop notifications,Sale automatic email,Sale automatic notifications,Automatic notification email";
+}
+<script type="text/javascript">
+    function onAddSilentRecaptcha(token) {
+
+        $("#addForm").validate().element("#urlInput");
+
+        if ($("#addForm").valid()) {
+
+            document.getElementById("addForm").submit();
+        }
+    }
+</script>
+<h1>Discord Webhooks</h1>
+<p>The Star Citizen Gimp bot supports Discord Webhooks as a notification medium. See the <a href="https://support.discordapp.com/hc/en-us/articles/228383668-Intro-to-Webhooks">Discord online documentation</a> for more on <a href="https://support.discordapp.com/hc/en-us/articles/228383668-Intro-to-Webhooks">Discord Webhooks</a>.</p>
+<form id="addForm" method="post">
+    <h2>Register your Webhook</h2>
+    <div class="form-group">
+        <input id="urlInput" asp-for="Url" class="form-control" placeholder="https://discordapp.com/api/webhooks/{webhook.id}/{webhook.token}" />
+        <span asp-validation-for="Url" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <button id="registerSubscriberButton" class="btn btn-primary g-recaptcha" data-sitekey="6LfTs04UAAAAACgTFxJ-xpdArNtZL09cZA9mfPvq" data-callback="onAddSilentRecaptcha">Register</button>
+    </div>
+    <div class="form-group">
+        <p>@Model.Message</p>
+    </div>
+</form>
+@await Html.PartialAsync("_DonatePartial")
+@await Html.PartialAsync("_StatsPartial", Model.Stats)

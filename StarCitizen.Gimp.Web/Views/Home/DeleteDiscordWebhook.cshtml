@@ -1,0 +1,35 @@
+﻿@using System.Collections.Generic
+@using System.Linq
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Http.Authentication
+@model DeleteDiscordWebhookViewModel
+@{
+    ViewData["Title"] = "Delete a Discord Webhook";
+    ViewData["MetaDescription"] = "Deregister from Star Citizen Gimp: A Discord Webhook bot that notifies you when there are updates to the RSI store and comm link feed.";
+    ViewData["MetaKeywords"] = "Delete Discord Webhook";
+}
+<script type="text/javascript">
+    function onDeleteSilentRecaptcha(token) {
+
+        $("#deleteForm").validate().element("#urlInput");
+
+        if ($("#deleteForm").valid()) {
+
+            document.getElementById("deleteForm").submit();
+        }
+    }
+</script>
+<form id="deleteForm" method="post">
+    <h1>Deregister a Discord Webhook</h1>
+    <p>Sick of getting notifications or angry at CIG? Enter your Discord Webhook URL here and click deregister.</p>
+    <div class="form-group">
+        <input id="urlInput" asp-for="Url" class="form-control" placeholder="https://discordapp.com/api/webhooks/{webhook.id}/{webhook.token}" />
+        <span asp-validation-for="Url" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <button id="deleteDiscordWebhookButton" class="btn btn-danger g-recaptcha" data-sitekey="6LfTs04UAAAAACgTFxJ-xpdArNtZL09cZA9mfPvq" data-callback="onDeleteSilentRecaptcha">Deregister</button>
+    </div>
+    <div class="form-group">
+        <p>@Model.Message</p>
+    </div>
+</form>

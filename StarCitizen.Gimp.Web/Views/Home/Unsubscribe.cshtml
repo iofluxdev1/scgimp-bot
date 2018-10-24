@@ -1,0 +1,35 @@
+﻿@using System.Collections.Generic
+@using System.Linq
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Http.Authentication
+@model UnsubscribeViewModel
+@{
+    ViewData["Title"] = "Unsubscribe";
+    ViewData["MetaDescription"] = "Unsubscribe from Star Citizen Gimp: A bot that notifies you when there are updates to the RSI store and comm link feed.";
+    ViewData["MetaKeywords"] = "Unsubscribe";
+}
+<script type="text/javascript">
+    function onUnsubscribeSilentRecaptcha(token) {
+
+        $("#unsubscribeForm").validate().element("#emailInput");
+
+        if ($("#unsubscribeForm").valid()) {
+
+            document.getElementById("unsubscribeForm").submit();
+        }
+    }
+</script>
+<form id="unsubscribeForm" method="post">
+    <h1>Leave me alone!</h1>
+    <p>Sick of getting notifications or angry at CIG? Enter your email address here and click unsubscribe.</p>
+    <div class="form-group">
+        <input id="emailInput" asp-for="Email" class="form-control" placeholder="john@doe.com" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <button id="unsubscribeButton" class="btn btn-danger g-recaptcha" data-sitekey="6LfTs04UAAAAACgTFxJ-xpdArNtZL09cZA9mfPvq" data-callback="onUnsubscribeSilentRecaptcha">Unsubscribe</button>
+    </div>
+    <div class="form-group">
+        <p>@Model.Message</p>
+    </div>
+</form>
