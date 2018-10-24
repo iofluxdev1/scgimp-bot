@@ -8,9 +8,6 @@
     <ProjectReference Include="..\StarCitizen.Gimp.Core\StarCitizen.Gimp.Core.csproj" />
   </ItemGroup>
 <ItemGroup>
-  <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.0" />
-</ItemGroup>
-<ItemGroup>
   <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.0.2" />
   <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.2" />
   <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.2" />
