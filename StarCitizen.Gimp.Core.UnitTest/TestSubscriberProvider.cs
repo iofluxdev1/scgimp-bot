@@ -25,9 +25,9 @@ namespace StarCitizen.Gimp.Core.UnitTest
         {
             return new ScGimpSubscriber[]
             {
-                new ScGimpSubscriber() { Email = "aspruyt@hotmail.co.uk" },
-                new ScGimpSubscriber() { Email = "aspruyt@hotmail.co" },
-                new ScGimpSubscriber() { Email = "aspruyt@hotmail" },
+                new ScGimpSubscriber() { Email = "changetoyourownvalidemail@hotmail.co.uk" },
+                new ScGimpSubscriber() { Email = "bademail@hotmail.co" },
+                new ScGimpSubscriber() { Email = "bademail@hotmail" },
                 new ScGimpSubscriber() { Email = "@hotmail.co.za" },
                 new ScGimpSubscriber() { Email = "hotmail.co.za" },
                 new ScGimpSubscriber() { Email = "co.za" },

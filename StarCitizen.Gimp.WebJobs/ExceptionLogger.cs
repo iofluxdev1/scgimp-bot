@@ -28,7 +28,8 @@ namespace StarCitizen.Gimp.WebJobs
                         IsBodyHtml = false
                     };
 
-                    mailMessage.To.Add(new MailAddress("aspruyt@hotmail.co.uk"));
+                    // TODO add to config and inject
+                    mailMessage.To.Add(new MailAddress("changetoyourownvalidemail@hotmail.co.uk"));
 
                     mailMessage.Body = FormatErrorBody(ex);
                     mailMessage.Subject = "Star Citizen Gimp web job error.";

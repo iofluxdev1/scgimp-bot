@@ -52,7 +52,7 @@ namespace StarCitizen.Gimp.Console
         public async Task<IEnumerable<ScGimpSubscriber>> GetSubscribersAsync()
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
-            return new ScGimpSubscriber[] { new ScGimpSubscriber() { Email = "aspruyt@hotmail.co.uk" } };
+            return new ScGimpSubscriber[] { new ScGimpSubscriber() { Email = "changetoyourownvalidemail@hotmail.co.uk" } };
         }
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
