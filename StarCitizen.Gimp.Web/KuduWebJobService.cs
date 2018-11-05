@@ -39,7 +39,7 @@ namespace StarCitizen.Gimp.Web
 
             using (var client = CreateWebClient())
             {
-                var jobJson = client.DownloadString($"https://{AzureWebsiteName}.scm.azurewebsites.net/api/continuouswebjobs/scgimp");
+                var jobJson = client.DownloadString($"https://{AzureWebsiteName}.scm.azurewebsites.net/api/continuouswebjobs/{webJobName}");
 
                 dynamic job = JsonConvert.DeserializeObject(jobJson);
 

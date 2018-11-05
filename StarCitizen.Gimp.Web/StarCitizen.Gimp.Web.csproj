@@ -13,9 +13,6 @@
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.4" />
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.4" />
     <PackageReference Include="Microsoft.AspNetCore.Rewrite" Version="2.1.1" />
-    <PackageReference Include="Microsoft.Azure.Management.Billing.Fluent" Version="1.9.1-beta" />
-    <PackageReference Include="Microsoft.Azure.Management.Consumption.Fluent" Version="1.9.1-beta" />
-    <PackageReference Include="Microsoft.Azure.Management.Fluent" Version="1.15.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.4" />
     <PackageReference Include="WindowsAzure.Storage" Version="9.3.2" />
   </ItemGroup>
