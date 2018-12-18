@@ -22,7 +22,6 @@ namespace StarCitizen.Gimp.Web.Controllers
     [ResponseCache(CacheProfileName = "Never")]
     public class HomeController : Controller
     {
-        private static readonly string __bgrKey = "BadGimpReports";
         private static readonly string __tadwsKey = "TotalActiveDiscordWebhookSubscribers";
         private static readonly string __taesKey = "TotalActiveEmailSubscribers";
         private static readonly string __nhKey = "NotificationHistory";
@@ -91,141 +90,6 @@ namespace StarCitizen.Gimp.Web.Controllers
         public async Task<IActionResult> Subscribe(SubscribeViewModel model)
         {
             return View(await HandleSubscription(model));
-        }
-
-        public IActionResult BadGimp()
-        {
-            return View(new BadGimpViewModel());
-        }
-
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> BadGimp(BadGimpViewModel model)
-        {
-            try
-            {
-                model.Message = string.Empty;
-
-                bool recaptchaResult = await VerifyGoogleRecaptcha(model.RecaptchaResponse);
-
-                if (!recaptchaResult)
-                {
-                    model.Message = "<div class=\"alert alert-danger\">Recaptcha validation failed.</div>";
-
-                    return View(model);
-                }
-
-                if (ModelState.IsValid)
-                {
-                    if (_cache.TryGetValue(__bgrKey, out BadGimpReports bgr))
-                    {
-                        string ip = GetRemoteIpAddress();
-
-                        if (!bgr.Ips.Contains(ip))
-                        {
-                            ScGimpWebConfig config = new ScGimpWebConfig();
-
-                            bgr.Ips.Add(ip);
-
-                            bgr.Count++;
-
-                            _cache.Set
-                            (
-                                __bgrKey, 
-                                bgr, 
-                                DateTimeOffset.Now.AddMinutes(30d)
-                            );
-
-                            if (bgr.Count >= 5)
-                            {
-
-                                KuduWebJobService kudu = new KuduWebJobService(config.KuduUserName, config.KuduPassword, config.AzureWebsiteName);
-
-                                string rssWebJobStatus = kudu.GetWebJobStatus(config.RssWebJobName).ToLowerInvariant();
-                                string storeWebJobStatus = kudu.GetWebJobStatus(config.StoreWebJobName).ToLowerInvariant();
-                                string spectrumWebJobStatus = kudu.GetWebJobStatus(config.SpectrumWebJobName).ToLowerInvariant();
-
-                                bool stoppedABadGimp = false;
-
-                                if (rssWebJobStatus != "stopped" &&
-                                    rssWebJobStatus != "aborted" &&
-                                    rssWebJobStatus != "abandoned" &&
-                                    rssWebJobStatus != "failure")
-                                {
-                                    kudu.StopWebJob(config.RssWebJobName);
-
-                                    stoppedABadGimp = true;
-                                }
-
-                                if (storeWebJobStatus != "stopped" &&
-                                    storeWebJobStatus != "aborted" &&
-                                    storeWebJobStatus != "abandoned" &&
-                                    storeWebJobStatus != "failure")
-                                {
-                                    kudu.StopWebJob(config.StoreWebJobName);
-
-                                    stoppedABadGimp = true;
-                                }
-
-                                if (spectrumWebJobStatus != "stopped" &&
-                                    spectrumWebJobStatus != "aborted" &&
-                                    spectrumWebJobStatus != "abandoned" &&
-                                    spectrumWebJobStatus != "failure")
-                                {
-                                    kudu.StopWebJob(config.SpectrumWebJobName);
-
-                                    stoppedABadGimp = true;
-                                }
-
-                                if (stoppedABadGimp)
-                                {
-                                    model.Message = "<div class=\"alert alert-success\">Thank you for letting us know that the gimp is out of hand. The Gimp has been stopped.<span>";
-
-                                    SendBadGimpEmail(model, bgr, config);
-                                }
-                                else
-                                {
-                                    model.Message = "<span class=\"text-info\">Thank you for letting us know that the gimp was out of hand. Luckily the Gimp has already been stopped a while ago.</div>";
-                                }
-                            }
-                            else
-                            {
-                                model.Message = $"<div class=\"alert alert-success\">Thank you for letting us know that the gimp is out of hand. Another {5 - bgr.Count} reports are required to stop the gimp.</div>";
-
-                                SendBadGimpEmail(model, bgr, config);
-                            }
-                        }
-                        else
-                        {
-                            model.Message = "<span class=\"text-info\">Thank you for letting us know that the gimp is out of hand. You have already submitted a report in the last 30 minutes.</div>";
-                        }
-                    }
-                    else
-                    {
-                        _cache.Set
-                        (
-                            __bgrKey, 
-                            new BadGimpReports()
-                            {
-                                Count = 1,
-                                Ips = new List<string>() { GetRemoteIpAddress() }
-                            }, 
-                            DateTimeOffset.Now.AddMinutes(30d)
-                        );
-
-                        model.Message = "<div class=\"alert alert-success\">Thank you for letting us know that the gimp is out of hand. Your report is the first one in the last 30 minutes. Another 4 reports are required to stop the gimp and notify the administrator.</div>";
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                // TODO log
-                model.Message = "<div class=\"alert alert-danger\">An error has occured. Please try again later.</div>";
-                Trace.WriteLine(ex);
-            }
-
-            return View(model);
         }
 
         public IActionResult Unsubscribe()
@@ -846,45 +710,6 @@ namespace StarCitizen.Gimp.Web.Controllers
                 // TODO log
                 Trace.WriteLine(ex);
             }
-        }
-
-        private void SendBadGimpEmail(BadGimpViewModel model, BadGimpReports bgr, ScGimpWebConfig config)
-        {
-            try
-            {
-                using (SmtpClient client = CreateSmtpClient(config))
-                {
-                    MailMessage mailMessage = new MailMessage
-                    {
-                        From = new MailAddress(config.Options.From, "Star Citizen Gimp"),
-                        IsBodyHtml = false
-                    };
-
-                    mailMessage.To.Add(config.TraceRecipients);
-
-                    mailMessage.Body = FormatBadGimpBody(model, bgr);
-                    mailMessage.Subject = $"Star Citizen Gimp: There are currently {bgr.Count} reports of a bad gimp.";
-
-                    client.Send(mailMessage);
-                }
-            }
-            catch (Exception ex)
-            {
-                // TODO log
-                Trace.WriteLine(ex);
-            }
-        }
-
-        private string FormatBadGimpBody(BadGimpViewModel model, BadGimpReports bgr)
-        {
-            StringBuilder builder = new StringBuilder();
-
-            builder.Append("Model message: ");
-            builder.AppendLine(model.Message);
-            builder.AppendLine("JSON:");
-            builder.Append(JsonConvert.SerializeObject(bgr, Formatting.Indented));
-            
-            return builder.ToString();
         }
 
         private string FormatWelcomeBody()

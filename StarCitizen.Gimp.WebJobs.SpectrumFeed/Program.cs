@@ -1,6 +1,8 @@
-﻿using Microsoft.Azure.WebJobs;
-using StarCitizen.Gimp.WebJobs.Core;
+﻿using StarCitizen.Gimp.WebJobs.Core;
 using System;
+using System.IO;
+using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace StarCitizen.Gimp.WebJobs
@@ -11,17 +13,55 @@ namespace StarCitizen.Gimp.WebJobs
         {
             try
             {
-                JobHostConfiguration config = new JobHostConfiguration();
-                JobHost host = new JobHost(config);
+                using (CancellationTokenSource cancellationTokenSource = new CancellationTokenSource())
+                {
+                    void cancelKeyPressEventHandler(object sender, ConsoleCancelEventArgs eventArgs)
+                    {
+                        cancellationTokenSource.Cancel();
+                    }
 
-                host.CallAsync(typeof(Functions).GetMethod("Worker"));
+                    Console.CancelKeyPress += cancelKeyPressEventHandler;
+                    Task task = null;
 
-                host.RunAndBlock();
+                    try
+                    {
+                        task = Task.Run
+                        (
+                            async () =>
+                            {
+                                while (true)
+                                {
+                                    StringBuilder stringBuilder = new StringBuilder();
+                                    using (StringWriter stringWriter = new StringWriter(stringBuilder))
+                                    {
+                                        await Functions.Worker(stringWriter, cancellationTokenSource.Token);
+                                    }
+                                }
+                            },
+                            cancellationTokenSource.Token
+                        );
+
+                        task.Wait(cancellationTokenSource.Token);
+                    }
+                    catch
+                    {
+                        throw;
+                    }
+                    finally
+                    {
+                        Console.CancelKeyPress -= cancelKeyPressEventHandler;
+
+                        if (task != null)
+                        {
+                            task.Dispose();
+                        }
+                    }
+                }
             }
             catch (TaskCanceledException) { }
             catch (Exception ex)
             {
-                ExceptionLogger.Email(new Exception("Web job error in main. Please see inner exception for more details.", ex));
+                ExceptionLogger.Email(new Exception("Error in main. Please see inner exception for more details.", ex));
             }
         }
     }

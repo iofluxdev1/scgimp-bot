@@ -1,5 +1,4 @@
-﻿using Microsoft.Azure.WebJobs;
-using StarCitizen.Gimp.Core;
+﻿using StarCitizen.Gimp.Core;
 using StarCitizen.Gimp.Data;
 using System;
 using System.IO;
@@ -14,7 +13,6 @@ namespace StarCitizen.Gimp.WebJobs.Core
         private static TextWriter _log;
         private static bool _debug;
 
-        [NoAutomaticTrigger]
         public static async Task Worker(TextWriter log, CancellationToken token)
         {
             try

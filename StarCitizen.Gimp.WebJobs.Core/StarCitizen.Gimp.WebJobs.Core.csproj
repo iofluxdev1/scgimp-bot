@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Azure.WebJobs" Version="3.0.0-beta5" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\StarCitizen.Gimp.Core\StarCitizen.Gimp.Core.csproj" />
     <ProjectReference Include="..\StarCitizen.Gimp.Data\StarCitizen.Gimp.Data.csproj" />
   </ItemGroup>
